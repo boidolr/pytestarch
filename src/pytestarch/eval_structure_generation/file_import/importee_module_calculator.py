@@ -15,8 +15,8 @@ class ImporteeModuleCalculator:
     def calculate_importee_modules(
         self,
         imports: Sequence[Import],
-        all_modules: List[str],
-    ) -> List[str]:
+        all_modules: list[str],
+    ) -> list[str]:
         """For all imported modules: Calculate parent modules and add them to the list of existing modules if they
         are not already part of this list. This mainly applies to external dependencies.
 
@@ -37,7 +37,7 @@ class ImporteeModuleCalculator:
 
         return list(extended_modules)
 
-    def _calculate_parent_modules(self, imp: Import) -> Set[str]:
+    def _calculate_parent_modules(self, imp: Import) -> set[str]:
         modules = {imp.importee()}
         modules.update(imp.importee_parent_modules())
 

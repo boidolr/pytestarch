@@ -13,4 +13,4 @@ class Config:
         e.g. test directories.
     """
 
-    excluded_directories: Tuple[str, ...]
+    excluded_directories: tuple[str, ...]

@@ -33,9 +33,9 @@ class NetworkxGraph(AbstractGraph):
 
     def __init__(
         self,
-        all_modules: List[Node],
+        all_modules: list[Node],
         imports: Sequence[Import],
-        level_limit: Optional[int] = None,
+        level_limit: int | None = None,
     ) -> None:
         """
         Args:
@@ -85,7 +85,7 @@ class NetworkxGraph(AbstractGraph):
 
     def _add_edges_within_module_hierarchy(
         self,
-        parent_modules: List[Node],
+        parent_modules: list[Node],
         child: Node,
     ) -> None:
         """Create edges between a node and its parent recursively until the parent-less parent is reached.
@@ -163,14 +163,14 @@ class NetworkxGraph(AbstractGraph):
         return self._graph.number_of_nodes()
 
     @property
-    def nodes(self) -> List[Node]:
+    def nodes(self) -> list[Node]:
         return list(self._graph.nodes)
 
     @property
-    def edges(self) -> List[Tuple[Node, Node]]:
+    def edges(self) -> list[tuple[Node, Node]]:
         return list(self._graph.edges)
 
-    def direct_predecessor_nodes(self, node: Node) -> List[Node]:
+    def direct_predecessor_nodes(self, node: Node) -> list[Node]:
         """Returns all nodes that have a directed edge towards the given node.
 
         Args:
@@ -181,7 +181,7 @@ class NetworkxGraph(AbstractGraph):
         """
         return sorted(self._graph.predecessors(node))
 
-    def direct_successor_nodes(self, node: Node) -> List[Node]:
+    def direct_successor_nodes(self, node: Node) -> list[Node]:
         """Returns all nodes that the given node has a directed edge towards.
 
         Args:
@@ -245,8 +245,8 @@ class NetworkxGraph(AbstractGraph):
 
         draw_networkx(self._graph, **kwargs)
 
-    def _create_plot_labels_with_alias(self, aliases: Dict[str, str]) -> Dict[str, str]:
-        module_names: List[str] = list(self._graph.nodes)
+    def _create_plot_labels_with_alias(self, aliases: dict[str, str]) -> dict[str, str]:
+        module_names: list[str] = list(self._graph.nodes)
         self._assert_aliased_modules_exist(aliases, module_names)
 
         # longest name first so aliases for submodule take priority over aliases  for
@@ -265,8 +265,8 @@ class NetworkxGraph(AbstractGraph):
 
     def _assert_aliased_modules_exist(
         self,
-        aliases: Dict[str, str],
-        module_names: List[str],
+        aliases: dict[str, str],
+        module_names: list[str],
     ) -> None:
         for module in aliases:
             if module not in module_names:
@@ -278,8 +278,8 @@ class NetworkxGraph(AbstractGraph):
     def _create_label(
         self,
         module_name: str,
-        sorted_aliased_modules: List[str],
-        aliases: Dict[str, str],
+        sorted_aliased_modules: list[str],
+        aliases: dict[str, str],
     ) -> str:
         try:
             most_specific_aliased_module = next(

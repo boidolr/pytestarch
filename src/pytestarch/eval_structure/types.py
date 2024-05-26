@@ -18,7 +18,7 @@ class Import(ABC):
         """
         return self._importer
 
-    def importer_parent_modules(self) -> List[str]:
+    def importer_parent_modules(self) -> list[str]:
         """Returns names of all parent modules of the importing module.
 
         Returns:
@@ -36,7 +36,7 @@ class Import(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def importee_parent_modules(self) -> List[str]:
+    def importee_parent_modules(self) -> list[str]:
         """Returns names of all parent modules of the imported module.
 
         Returns:
@@ -51,7 +51,7 @@ class Import(ABC):
         return f"{prefix}.{value}"
 
 
-def get_parent_modules(module: str) -> List[str]:
+def get_parent_modules(module: str) -> list[str]:
     """Calculates all parent modules of a given module.
 
     Example: source root is a
@@ -66,7 +66,7 @@ def get_parent_modules(module: str) -> List[str]:
     """
     parent_modules = []
 
-    parent: List[str] = []
+    parent: list[str] = []
 
     for char in module:
         if char == ".":

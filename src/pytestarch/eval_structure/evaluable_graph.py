@@ -91,5 +91,5 @@ class EvaluableArchitectureGraph(EvaluableArchitecture):
         self._graph.draw(**kwargs)  # type: ignore
 
     @property
-    def modules(self) -> List[str]:
+    def modules(self) -> list[str]:
         return self._graph.nodes

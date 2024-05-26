@@ -36,7 +36,7 @@ test_cases = [
 
 @pytest.mark.parametrize("regex, expected_matches", test_cases)
 def test_submodules_are_matched(
-    regex: str, expected_matches: List[str], flat_project_1: EvaluableArchitecture
+    regex: str, expected_matches: list[str], flat_project_1: EvaluableArchitecture
 ) -> None:
     modules_to_convert = [ModuleNameRegexFilter(name=regex)]
 

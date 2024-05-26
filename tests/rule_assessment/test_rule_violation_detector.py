@@ -84,15 +84,11 @@ def get_module_requirement(**kwargs) -> ModuleRequirement:
 
 @dataclass
 class RuleViolationDetectorTestCase:
-    behavior: Dict[str, Any]
-    expected_violation: Optional[str]
-    expected_violating_dependencies: Set[Dependency]
-    explicitly_requested_dependencies: Optional[
-        ExplicitlyRequestedDependenciesByBaseModules
-    ]
-    not_explicitly_requested_dependencies: Optional[
-        NotExplicitlyRequestedDependenciesByBaseModule
-    ]
+    behavior: dict[str, Any]
+    expected_violation: str | None
+    expected_violating_dependencies: set[Dependency]
+    explicitly_requested_dependencies: ExplicitlyRequestedDependenciesByBaseModules | None
+    not_explicitly_requested_dependencies: NotExplicitlyRequestedDependenciesByBaseModule | None
 
 
 test_cases = [

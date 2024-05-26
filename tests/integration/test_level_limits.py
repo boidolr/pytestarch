@@ -131,7 +131,7 @@ def test_edges_correctly_calculated_for_level_2_module_path() -> None:
     )  # only parent-submodule edges # type: ignore
 
 
-def _not_inheritance_edge(edge: Tuple[str, str], graph: NetworkxGraph) -> bool:
+def _not_inheritance_edge(edge: tuple[str, str], graph: NetworkxGraph) -> bool:
     return not graph.parent_child_relationship(*edge)
 
 

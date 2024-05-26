@@ -89,20 +89,20 @@ class ModuleSpecification(Generic[ModuleSpecificationSuccessor], ABC):
 
     @abstractmethod
     def are_sub_modules_of(
-        self, modules: Union[str, List[str]]
+        self, modules: str | list[str]
     ) -> ModuleSpecificationSuccessor:
         """If multiple rule subjects are specified, this has the same effect as defining a rule per rule subject."""
         pass
 
     @abstractmethod
-    def are_named(self, names: Union[str, List[str]]) -> ModuleSpecificationSuccessor:
+    def are_named(self, names: str | list[str]) -> ModuleSpecificationSuccessor:
         """If multiple rule subjects are specified, this has the same effect as defining a rule per rule subject."""
         pass
 
     @deprecated
     @abstractmethod
     def have_name_containing(
-        self, partial_name: Union[str, List[str]]
+        self, partial_name: str | list[str]
     ) -> ModuleSpecificationSuccessor:
         """
         [DEPRECATED] Use have_name_matching instead; method will be removed in upcoming releases.
@@ -178,7 +178,7 @@ class LayerDefinition(ABC):
 
     @abstractmethod
     def containing_modules(
-        self, modules: Union[str, List[str]]
+        self, modules: str | list[str]
     ) -> BaseLayeredArchitecture:
         """If a module is defined as belonging to layer X, then its submodules are also assumed to be part of layer X."""
         pass
