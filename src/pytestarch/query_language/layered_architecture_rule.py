@@ -170,7 +170,11 @@ class LayerRule(
                 "Specify a LayeredArchitecture before defining layer behavior."
             )
 
-        self._rule = Rule(rule_matcher_class=partial(self._rule_matcher_class, layer_mapping=self._architecture.layer_mapping)).modules_that()  # type: ignore
+        self._rule = Rule(
+            rule_matcher_class=partial(
+                self._rule_matcher_class, layer_mapping=self._architecture.layer_mapping
+            )
+        ).modules_that()  # type: ignore
 
         return self
 

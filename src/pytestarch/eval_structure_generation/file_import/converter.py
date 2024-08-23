@@ -78,10 +78,24 @@ class ImportConverter:
         if isinstance(module, ast.Import):
             new_imports = []
             for alias in module.names:
-                new_imports.append(AbsoluteImport(module_name, self._adjust_with_root_prefix(alias.name, absolute_import_prefix, all_internal_modules)))  # type: ignore
+                new_imports.append(
+                    AbsoluteImport(
+                        module_name,
+                        self._adjust_with_root_prefix(
+                            alias.name, absolute_import_prefix, all_internal_modules
+                        ),
+                    )
+                )  # type: ignore
         elif isinstance(module, ast.ImportFrom):
             if module.level == 0:
-                new_imports = [AbsoluteImport(module_name, self._adjust_with_root_prefix(module.module, absolute_import_prefix, all_internal_modules))]  # type: ignore
+                new_imports = [
+                    AbsoluteImport(
+                        module_name,
+                        self._adjust_with_root_prefix(
+                            module.module, absolute_import_prefix, all_internal_modules
+                        ),
+                    )
+                ]  # type: ignore
             else:
                 new_imports = []
                 for alias in module.names:
