@@ -3,8 +3,8 @@ from __future__ import annotations
 from collections.abc import Sequence
 from functools import partial
 
-from pytestarch import EvaluableArchitecture, Rule
 from pytestarch.eval_structure.evaluable_architecture import (
+    EvaluableArchitecture,
     LayerMapping,
     ModuleFilter,
     ModuleNameFilter,
@@ -24,6 +24,7 @@ from pytestarch.query_language.base_language import (
     RuleApplier,
 )
 from pytestarch.query_language.exceptions import ImproperlyConfigured
+from pytestarch.query_language.rule import Rule
 from pytestarch.rule_assessment.rule_check.rule_matcher import (
     LayerRuleMatcher,
     RuleMatcher,
@@ -170,7 +171,12 @@ class LayerRule(
                 "Specify a LayeredArchitecture before defining layer behavior."
             )
 
-        self._rule = Rule(rule_matcher_class=partial(self._rule_matcher_class, layer_mapping=self._architecture.layer_mapping)).modules_that()  # type: ignore
+        self._rule = Rule(
+            rule_matcher_class=partial(
+                self._rule_matcher_class,
+                layer_mapping=self._architecture.layer_mapping,  # type: ignore
+            )
+        ).modules_that()
 
         return self
 

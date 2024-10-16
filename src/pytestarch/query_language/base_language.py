@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Generic, TypeVar, Union
 
-from pytestarch import EvaluableArchitecture
+from pytestarch.eval_structure.evaluable_architecture import EvaluableArchitecture
 from pytestarch.utils.decorators import deprecated
 
 
@@ -203,7 +203,6 @@ class LayerName(ABC):
 
 
 class BaseLayeredArchitecture(ABC):
-
     @abstractmethod
     def with_layer(self) -> LayerName:
         """This is simply a convenience method to achieve proper typing. It can be omitted."""
