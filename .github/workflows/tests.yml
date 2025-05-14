@@ -2,13 +2,14 @@ name: Tests
 on:
   pull_request:
     types: [opened, reopened, synchronize, edited]
+  workflow_dispatch:
 
 jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ "3.9", "3.10", "3.11", "3.12", "3.13" ]
+        python-version: [ "3.9", "3.10", "3.11", "3.12", "3.13", "3.14-dev" ]
         poetry-version: [2.0.1]
 
     steps:
