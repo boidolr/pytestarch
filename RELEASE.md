@@ -35,8 +35,8 @@ Then share the tag via
 
 
 ## Release a new version of the documentation
-Run `mike deploy --push --update-aliases <insert new version> latest`. This will update the project's documentation 
-hosted on GitHub Pages.
+Run `zensical build` to build the documentation. Versioning will be handled by Zensical's native versioning system once configured.
+For now, you can deploy the built site to GitHub Pages using `zensical gh-deploy` or a similar workflow.
 
 
 ## Release a new version of PyTestArch
