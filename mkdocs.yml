@@ -2,19 +2,19 @@ site_name: PyTestArch
 
 theme:
   name: "material"
+  features:
+    - search.highlight
 
 plugins:
-  - search
   - mkdocstrings:
-      handlers:
-        python:
-          options:
-            show_source: false
-            show_root_heading: true
-            show_root_full_path: false
-extra:
-  version:
-    provider: mike
+    handlers:
+      python:
+        paths: [src]
+        options:
+          docstring_style: google
+          show_source: false
+          show_root_heading: true
+          show_root_full_path: false
 
 
 nav:
