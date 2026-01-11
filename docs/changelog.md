@@ -3,8 +3,14 @@
 This project uses semantic versioning and follows [keep a changelog](https://keepachangelog.com).
 
 ## 4.0.2 TBD
+### Changed
+- Drop support for python 3.9
+- Support for python 3.14
+- Accept `pathlib.Path`s in `get_evaluable_architecture(..)`
+
 ### Fixed
 - Straightforward error message when using wildcards in `are_named` rules.
+- Typo in docstring of `get_evaluable_architecture(..)`.
 
 ## 4.0.1 -- 2025-08-08
 ### Fixed
