@@ -67,7 +67,11 @@ def generate_graph(
     )
 
     all_modules = _append_external_modules_to_module_list(
-        all_modules, exclude_external_libraries, imports, root_path, external_exclusions
+        all_modules,
+        exclude_external_libraries,
+        imports,
+        root_path.name,
+        external_exclusions,
     )
     return EvaluableArchitectureGraph(NetworkxGraph(all_modules, imports, level_limit))
 
@@ -76,7 +80,7 @@ def _append_external_modules_to_module_list(
     all_modules: list[Node],
     exclude_external_libraries: bool,
     imports: Sequence[Import],
-    root_path: Path,
+    root_module_name: str,
     external_exclusions: tuple[str, ...],
 ) -> list[Node]:
     """External modules are not detected as modules when importing the source folder - but they will of course show up
@@ -85,7 +89,7 @@ def _append_external_modules_to_module_list(
     if exclude_external_libraries:
         return all_modules
 
-    all_modules = ImporteeModuleCalculator(root_path).calculate_importee_modules(
+    all_modules = ImporteeModuleCalculator(root_module_name).calculate_importee_modules(
         imports,
         all_modules,
     )
