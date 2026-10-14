@@ -3,17 +3,26 @@
 This project uses semantic versioning and follows [keep a changelog](https://keepachangelog.com).
 
 ## 5.1.0 -- TBD
+### Added
+- Support for container root directories: if the `root_path` of `get_evaluable_architecture(..)` does not contain an `__init__.py` (e.g. a plain `src` directory holding several top-level packages), it is now treated as a container of modules: module names keep the root directory's name as a prefix by default (e.g. `src.package1.module1`), and imports written root-relative (e.g. `from package2 import module2`) are correctly classified as internal dependencies and resolved to their prefixed names, so no spurious duplicate nodes appear. With the new opt-in parameter `module_naming="relative"`, module names are derived relative to the root without the root directory's prefix (e.g. `package1.module1`) (fixes [#144](https://github.com/zyskarch/pytestarch/issues/144)).
+
 ### Changed
 - Switched dependency and packaging management from Poetry to [uv](https://docs.astral.sh/uv/): `pyproject.toml` now uses a `hatchling` build backend and PEP 735 dependency groups.
 - Added root `index.html` with redirect to latest (`https://zyskarch.github.io/pytestarch/` resolves to `https://zyskarch.github.io/pytestarch/latest/`).
 - Absolute imports of the form `from <package> import <module>` are now recognized as imports of `<package>.<module>`, allowing rules defined via `are_named` and similar to match them ([#145](https://github.com/zyskarch/pytestarch/issues/145)).
 - Relative imports of the form `from .<package> import <module>` are now recognized as imports of `<package>.<module>` as well ([#145](https://github.com/zyskarch/pytestarch/issues/145)).
 - In partial scans (`module_path` being a submodule of `root_path`) with `exclude_external_libraries` set to `False`, internal modules outside the scanned `module_path` are no longer added as nodes to the dependency graph.
+- Rules for container roots that previously passed vacuously may now fail legitimately: because root-relative imports between top-level packages were misclassified as external and dropped from the graph, `should_not().import...` rules over such imports were never actually enforced. With the corrected classification they are — and will fail if the scanned code truly violates them.
+- With `exclude_external_libraries` set to `False`, root-relative imports no longer create spurious duplicate nodes named without the root prefix (a bare `package2` node next to the real `src.package2`). Rules referencing such bare names must be updated to the root-dir-prefixed names (or use `module_naming="relative"`).
 
 ### Fixed
 - Canonical URLs point to the correct versioned page instead of `/latest/<version>/`.
 - `from . import <name>` no longer turns imported attributes or `*` into imports of non-existent `<package>.<name>` modules.
 - Internal modules are no longer added to the graph as spurious external dependency nodes when `exclude_external_libraries` is set to `False` (partially fixes [#144](https://github.com/zyskarch/pytestarch/issues/144)).
+- `level_limit` now flattens container-root graphs correctly when `module_naming="relative"` is used: module names of container roots (no root module name prefix) were previously kept one level deeper than the documented limit. With the default root-dir naming, the root directory's name fills the hierarchy level again, as in previous pytestarch versions.
+- An importee that starts with the root module name but is not a submodule of it (e.g. `appdirs` for a root module `app`) is no longer misclassified as internal.
+- Relative imports in modules located directly at a container root (no `__init__.py`) with `module_naming="relative"` now raise an explanatory `ImportException` instead of crashing with an `IndexError`. With the default naming, such an import resolves against the root directory's name.
+
 
 
 ## 5.0.0 -- 2026-10-11
