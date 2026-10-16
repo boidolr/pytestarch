@@ -22,3 +22,17 @@ def test_relative_import_parent_modules_as_expected() -> None:
         "test.test1",
         "test.test1.importee",
     }
+
+
+def test_relative_import_without_module_and_name_is_the_base_package() -> None:
+    """The bare 'from . import <name>' form imports the containing package as
+    well; an import without module and name represents exactly that package."""
+
+    imp = RelativeImport("test.test1.test2", None, None, 1)
+
+    assert imp.importee() == "test.test1"
+    assert set(imp.importee_parent_modules()) == {"test"}
+
+    imp_level_2 = RelativeImport("test.test1.test2", None, None, 2)
+
+    assert imp_level_2.importee() == "test"
