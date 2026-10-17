@@ -137,10 +137,15 @@ class ImportConverter:
                         new_imports.append(submodule_import)
             else:
                 new_imports = []
-                if module.module is not None:
-                    new_imports.append(
-                        RelativeImport(module_name, module.module, None, module.level)
-                    )
+                # At the language level, 'from <module> import <name>' imports the
+                # base module, and any bare relative form ('from . import <name>',
+                # 'from .. import <name>', ...) imports the base package at that
+                # level (a bare RelativeImport resolves it itself when the module
+                # is None). This matches the absolute form, which always records
+                # the package it imports from.
+                new_imports.append(
+                    RelativeImport(module_name, module.module, None, module.level)
+                )
                 for alias in module.names:
                     relative_submodule_import = self._import_of_internal_submodule(
                         alias.name,
