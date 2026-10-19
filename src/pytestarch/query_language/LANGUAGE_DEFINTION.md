@@ -234,3 +234,39 @@ All concrete modules are listed with "(LAYER X)" behind their name, such as "Vio
 | should only be imported except -- both      | Violator2 imports Violator1. Subviolator2 imports Subviolator1. Violator3 imports Subviolator1. LAYER M1 is not imported by any that is not LAYER M2, LAYER M3 | (submodules of M1, M2, M3); concatentation with "," | list all M2s  |
 | should not be imported except               | Violator2 imports Violator1. Violator3 imports Subviolator1                                                                                                    | (submodule of M1)                                   | -             |
 
+
+## Coupling Rules (experimental)
+
+Coupling rules are not part of the relationship grammar above; they use their own
+builder in `pytestarch.experimental`:
+
+```
+CouplingRule.modules_that() MODULE_SPECIFICATION MAX_COUPLING_DECLARATION+
+```
+
+MODULE_SPECIFICATION:
+    are_named
+    are_sub_modules_of
+    have_name_matching
+    have_name_containing (deprecated)
+
+MAX_COUPLING_DECLARATION:
+    should_have_max_efferent_coupling N
+    should_have_max_afferent_coupling N
+
+A module specification selects one or more module groups. For are_named and
+have_name_matching, a group includes the selected module and its submodules. For
+are_sub_modules_of(X), a group is the strict submodules of X; X itself is internal
+and is not part of the group. Parent modules and other ancestors are internal.
+Efferent coupling counts distinct modules the group directly imports; afferent
+coupling counts distinct modules that directly import the group. Parent/child
+hierarchy edges and imports inside the group are ignored. Coupling is not
+transitive and counts modules, not import statements.
+
+Example:
+    CouplingRule()
+        .modules_that()
+        .are_named("my_project.services")
+        .should_have_max_efferent_coupling(5)
+        .should_have_max_afferent_coupling(10)
+        .assert_applies(evaluable)

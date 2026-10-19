@@ -11,3 +11,5 @@
 ## ::: src.pytestarch.experimental.onion_architecture
 
 ## ::: src.pytestarch.experimental.layered_architecture
+
+## ::: src.pytestarch.experimental.coupling

@@ -13,7 +13,9 @@ from pytestarch.eval_structure.breadth_first_searches import (
     any_other_dependency_to_module_than,
     get_dependency_between_modules,
 )
+from pytestarch.eval_structure.coupling import get_coupling as calculate_coupling
 from pytestarch.eval_structure.evaluable_architecture import (
+    CouplingByBaseModule,
     EvaluableArchitecture,
     ExplicitlyRequestedDependenciesByBaseModules,
     ModuleFilter,
@@ -49,6 +51,9 @@ class EvaluableArchitectureGraph(EvaluableArchitecture):
             )
 
         return result
+
+    def get_coupling(self, modules: Iterable[ModuleFilter]) -> CouplingByBaseModule:
+        return calculate_coupling(self._graph, modules)
 
     def any_dependencies_from_dependents_to_modules_other_than_dependent_upons(
         self,

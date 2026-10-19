@@ -49,6 +49,28 @@ rule.assert_applies(evaluable)
 ```
 That's it!
 
+## Coupling Checks (experimental)
+
+The experimental `CouplingRule` limits how many modules a module may depend on
+(efferent coupling) and how many modules may depend on it (afferent coupling):
+
+```python
+from pytestarch.experimental import CouplingRule
+
+coupling_rule = (
+    CouplingRule()
+    .modules_that()
+    .are_named("project.src.moduleB")
+    .should_have_max_efferent_coupling(5)
+    .should_have_max_afferent_coupling(10)
+)
+
+coupling_rule.assert_applies(evaluable)
+```
+
+See the [coupling checks documentation](https://zyskarch.github.io/pytestarch/latest/features/coupling_checks/)
+for the exact semantics. The rule is experimental and its API may change.
+
 ## Real-World Example
 
 The snippet below is taken directly from pytestarch's own architecture tests

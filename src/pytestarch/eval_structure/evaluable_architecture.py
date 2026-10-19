@@ -216,6 +216,29 @@ class ModuleGroup(Module):
         return False
 
 
+@dataclass(frozen=True)
+class Coupling:
+    """Efferent and afferent coupling of one module or module group.
+
+    The sets contain the distinct modules on the other side of direct imports.
+    Parent/child hierarchy relationships and imports within the module's own
+    hierarchy are not included.
+    """
+
+    efferent_modules: frozenset[Module]
+    afferent_modules: frozenset[Module]
+
+    @property
+    def efferent_coupling(self) -> int:
+        """Number of distinct modules this module depends on."""
+        return len(self.efferent_modules)
+
+    @property
+    def afferent_coupling(self) -> int:
+        """Number of distinct modules that depend on this module."""
+        return len(self.afferent_modules)
+
+
 Dependency = tuple[Module, Module]
 # key: user-requested dependency
 # values: list of exact modules that show this dependency
@@ -224,6 +247,7 @@ ExplicitlyRequestedDependenciesByBaseModules = dict[Dependency, list[Dependency]
 # via the rule the user has specified
 # value: importer and importee that were not found
 NotExplicitlyRequestedDependenciesByBaseModule = dict[Module, list[Dependency]]
+CouplingByBaseModule = dict[Module, Coupling]
 
 
 class EvaluableArchitecture(Protocol):
@@ -249,6 +273,30 @@ class EvaluableArchitecture(Protocol):
         Returns:
             Importer and importee per pair of dependent and dependent_upon module if there are any
             that are sub modules of dependent and dependent_upon respectively.
+        """
+        raise NotImplementedError()
+
+    def get_coupling(
+        self,
+        modules: Iterable[ModuleFilter],
+    ) -> CouplingByBaseModule:
+        """Calculates the efferent and afferent coupling of the given modules.
+
+        A named module includes its submodules. For a parent-module filter, the
+        group is the strict submodules of the parent; the parent itself is
+        internal and not part of the group. Parent modules and other ancestors
+        are treated as internal, so coupling is only counted across the boundary
+        of the module's hierarchy. Only direct import relationships are
+        considered; parent/child hierarchy edges are ignored.
+
+        The filters must already be concrete. Regex filters have to be resolved
+        by the caller before invoking this method.
+
+        Args:
+            modules: Modules or module groups to calculate coupling for.
+
+        Returns:
+            Coupling per requested module, keyed by the module or module group.
         """
         raise NotImplementedError()
 
